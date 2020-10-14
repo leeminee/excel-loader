@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern> %d{MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%thread{10}] %cyan(%logger{20}):%magenta(%line) %msg%n </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 변수 지정 -->
+    <property name="APP_NAME" value="nes-stat" />
+    <property name="LOG_HISTORY" value="60" />
+    <property name="LOG_MAX_FILESIZE" value="50MB" />
+    <property name="LOG_TOTAL_FILESIZE" value="10GB" />
+    <!-- 변수 지정 -->
+    <springProfile name="local">
+        <property name="LOG_DIR" value="~/dev" />
+    </springProfile>
+    <springProfile name="product">
+        <property name="LOG_DIR" value="/var/log/nems" />
+    </springProfile>
+<!--    <property name="LOG_DIR" value="~/${APP_NAME}" />-->
+    <!--<if condition='"${spring.profiles.active}".equals("product")'>
+        <then>
+            <property name="LOG_DIR" value="/var/log/nems/${APP_NAME}" />
+        </then>
+        <else>
+            <property name="LOG_DIR" value="~/${APP_NAME}" />
+        </else>
+    </if>-->
+    <property name="LOG_PATH_NAME" value="${LOG_DIR}/${APP_NAME}.log" />
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH_NAME}</file>
+        <!--<append>true</append>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_DIR}/${APP_NAME}.log.%i</fileNamePattern>-->
+<!--            <minIndex>1</minIndex>-->
+<!--            <maxIndex>20</maxIndex>-->
+<!--        </rollingPolicy>-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${APP_NAME}.%d{yyyy-MM-dd}.log.%i</fileNamePattern>
+            <maxFileSize>${LOG_MAX_FILESIZE}</maxFileSize>
+            <maxHistory>${LOG_HISTORY}</maxHistory>​
+            <totalSizeCap>${LOG_TOTAL_FILESIZE}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{MM-dd HH:mm:ss.SSS} [%-5p] [%F]%M\(%L\) %m%n</pattern>
+        </encoder>
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--<fileNamePattern>labatory.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+            <!--<maxHistory>30</maxHistory>-->
+        <!--</rollingPolicy>-->
+
+        <!--<encoder>-->
+            <!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-4relative -&#45;&#45; [ %thread{10} ] %logger{35} - %msg%n</pattern>-->
+        <!--</encoder>-->
+    </appender>
+
+    <root level="info">
+<!--        <springProfile name="local">-->
+            <appender-ref ref="CONSOLE"/>
+<!--        </springProfile>-->
+        <appender-ref ref="FILE"/> <!-- File로 로그를 남기고자 할 때 사용 -->
+    </root>
+
+</configuration>
