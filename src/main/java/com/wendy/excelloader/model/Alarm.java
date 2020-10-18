@@ -1,6 +1,7 @@
 package com.wendy.excelloader.model;
 
-public class Alarm {
+public class
+Alarm {
 
     private String alarmHost;
     private String alarmMessage;

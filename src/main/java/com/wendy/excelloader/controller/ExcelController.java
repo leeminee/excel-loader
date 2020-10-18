@@ -4,9 +4,12 @@ import com.wendy.excelloader.service.ExcelServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@ResponseBody
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@RestController // @Contorller + @ResponseBody
 public class ExcelController {
 
     private final ExcelServiceImpl excelServiceImpl;
@@ -16,8 +19,8 @@ public class ExcelController {
     }
 
     @GetMapping("/excel/create")
-    public String createExcel() {
+    public void createExcel(HttpServletRequest request, HttpServletResponse response) {
 
-        return excelServiceImpl.createExcel();
+        excelServiceImpl.createExcel(request, response);
     }
 }
