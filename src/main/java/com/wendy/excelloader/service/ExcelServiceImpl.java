@@ -44,7 +44,7 @@ public class ExcelServiceImpl implements ExcelService {
 
         Row row = sheet.createRow(++rowNumber);
 
-        row.createCell(row,1,"ITEM");
+        cell = row.createCell(1);
         cell.setCellStyle(headStyle);
         cell.setCellValue("ITEM");
 
