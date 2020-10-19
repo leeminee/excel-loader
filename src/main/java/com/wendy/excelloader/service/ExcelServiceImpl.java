@@ -1,31 +1,101 @@
 package com.wendy.excelloader.service;
 
-import com.wendy.excelloader.ExcelLoaderApplication;
 import com.wendy.excelloader.model.Alarm;
-import net.sf.jxls.transformer.XLSTransformer;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Service
-public class ExcelServiceImpl implements ExcelService{
+public class ExcelServiceImpl implements ExcelService {
 
     @Override
-    public String createExcel() {
+    public void createExcel(Workbook workbook, CellStyle headStyle, CellStyle bodyStyle, HttpServletResponse response) {
 
-        HashMap<String, Object> map = new HashMap<>();
-        String excelPath = ExcelLoaderApplication.class.getClassLoader().getResource("excel/excel-sample.xlsx").toString();
-        System.out.println("excelPath = " + excelPath);
+        Sheet sheet = workbook.createSheet("엑셀샘플양식");
+        alarmStatus(sheet, headStyle, bodyStyle, response);
 
-        XLSTransformer xlsTransformer = new XLSTransformer();
+        try {
+            workbook.write(response.getOutputStream());
+            workbook.close();
+        } catch (IOException e) {
+            log.error("excel write fail");
+            log.error("error message : " + e.getMessage());
+        }
 
-        List<Alarm> alarmHostList = new ArrayList<>();
-
-        alarmHostList.add(new Alarm("message",1));
-
-
-        return "hello";
     }
+
+    @Override
+    public void alarmStatus(Sheet sheet, CellStyle headStyle, CellStyle bodyStyle, HttpServletResponse response) {
+
+        String[] alarmMessage = {"PROVISION SERVER DISCONNECTED", "SWITCH PORT DOWN"};
+        String[] alarmHost = {"host1","2","0"};
+        Map<String, String[]> map = new HashMap<>();
+
+
+        Cell cell = null;
+        int lastCell;
+        int rowNumber = 0;
+
+        Row row = sheet.createRow(++rowNumber);
+
+        row.createCell(row,1,"ITEM");
+        cell.setCellStyle(headStyle);
+        cell.setCellValue("ITEM");
+
+        System.out.println("alarmList size : "+alarmMessage.length);
+
+        for (int i = 0; i < alarmMessage.length; i++) {
+            cell = row.createCell(i+2);
+            cell.setCellStyle(headStyle);
+            cell.setCellValue(alarmMessage[i]);
+        }
+        lastCell = alarmMessage.length+2;
+
+        cell = row.createCell(lastCell);
+        cell.setCellStyle(headStyle);
+        cell.setCellValue("총합계");
+        
+        // --------------------------------
+
+        for (rowNumber = 2; rowNumber < alarmHost.length; rowNumber++) {
+            row = sheet.createRow(rowNumber);
+            for (int i = 0; i < lastCell; i++) {
+                cell = row.createCell(i+1);
+                cell.setCellStyle(bodyStyle);
+                cell.setCellValue(alarmHost[i]);
+            }
+        }
+
+        row = sheet.createRow(++rowNumber);
+        cell = row.createCell(1);
+        cell.setCellStyle(bodyStyle);
+        cell.setCellValue("host1");
+
+        cell = row.createCell(2);
+        cell.setCellStyle(bodyStyle);
+        cell.setCellValue(2);
+
+        cell = row.createCell(3);
+        cell.setCellStyle(bodyStyle);
+        cell.setCellValue(0);
+
+        cell = row.createCell(4);
+        cell.setCellStyle(bodyStyle);
+        cell.setCellFormula("SUM(C3:D3)");
+
+
+    }
+
+    @Override
+    public void faultStatus(Sheet sheet, CellStyle headStyle, CellStyle bodyStyle) {
+
+    }
+
+
 }
