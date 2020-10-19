@@ -4,10 +4,13 @@ public class
 Alarm {
 
     private String alarmHost;
-    private String alarmMessage;
-    private int alarmCount;
+    private String[] alarmMessage;
+    private int[] alarmCount;
 
-    public Alarm(String alarmHost, String alarmMessage, int alarmCount) {
+    public Alarm() {
+    }
+
+    public Alarm(String alarmHost, String[] alarmMessage, int[] alarmCount) {
         this.alarmHost = alarmHost;
         this.alarmMessage = alarmMessage;
         this.alarmCount = alarmCount;
@@ -21,19 +24,19 @@ Alarm {
         this.alarmHost = alarmHost;
     }
 
-    public String getAlarmMessage() {
+    public String[] getAlarmMessage() {
         return alarmMessage;
     }
 
-    public void setAlarmMessage(String alarmMessage) {
+    public void setAlarmMessage(String[] alarmMessage) {
         this.alarmMessage = alarmMessage;
     }
 
-    public int getAlarmCount() {
+    public int[] getAlarmCount() {
         return alarmCount;
     }
 
-    public void setAlarmCount(int alarmCount) {
+    public void setAlarmCount(int[] alarmCount) {
         this.alarmCount = alarmCount;
     }
 }

@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -35,6 +37,10 @@ public class ExcelServiceImpl implements ExcelService {
 
         String[] alarmMessage = {"PROVISION SERVER DISCONNECTED", "SWITCH PORT DOWN"};
         String[] alarmHost = {"host1","2","0"};
+        List<Alarm> alarmList = new ArrayList<>();
+        Alarm alarm = new Alarm();
+
+        alarmList.add(new Alarm("ITEM", alarmMessage, alarm.getAlarmCount()));
         Map<String, String[]> map = new HashMap<>();
 
 
