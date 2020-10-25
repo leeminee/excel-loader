@@ -85,8 +85,12 @@ public class ExcelServiceImpl implements ExcelService {
                     cell.setCellStyle(bodyStyle);
                     cell.setCellValue(alarmHost[i]);
                     if(i==1){
+//                        cell.setCellType(CellType.NUMERIC);
+                        System.out.println(">>> "+cell.getCellFormula());
 //                        firstCellFormula = cell.getCellFormula();
                     } else if(i==lastCell-2){
+//                        cell.setCellType(CellType.NUMERIC);
+                        System.out.println(">>> "+cell.getCellFormula());
 //                        lastCellFormula = cell.getCellFormula();
                     }
                 }
