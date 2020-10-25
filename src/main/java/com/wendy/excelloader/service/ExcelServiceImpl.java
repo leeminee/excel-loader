@@ -54,7 +54,7 @@ public class ExcelServiceImpl implements ExcelService {
         cell.setCellStyle(headStyle);
         cell.setCellValue("ITEM");
 
-        System.out.println("alarmList size : "+alarmMessage.length);
+        System.out.println("alarmMessage length : "+alarmMessage.length);
 
         for (int i = 0; i < alarmMessage.length; i++) {
             cell = row.createCell(i+2);
@@ -62,6 +62,7 @@ public class ExcelServiceImpl implements ExcelService {
             cell.setCellValue(alarmMessage[i]);
         }
         lastCell = alarmMessage.length+2;
+        System.out.println("lastCell : "+lastCell);
 
         cell = row.createCell(lastCell);
         cell.setCellStyle(headStyle);
@@ -69,31 +70,45 @@ public class ExcelServiceImpl implements ExcelService {
         
         // --------------------------------
 
-        for (rowNumber = 2; rowNumber < alarmHost.length; rowNumber++) {
-            row = sheet.createRow(rowNumber);
+        String firstCellFormula = "C3";
+        String lastCellFormula = "D3";
+
+        for (rowNumber = 0; rowNumber < alarmHost.length; rowNumber++) {
+            row = sheet.createRow(rowNumber+2);
             for (int i = 0; i < lastCell; i++) {
-                cell = row.createCell(i+1);
-                cell.setCellStyle(bodyStyle);
-                cell.setCellValue(alarmHost[i]);
+                if(i==lastCell-1){
+                    cell = row.createCell(lastCell);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellFormula(String.format("SUM(%s:%s)", firstCellFormula, lastCellFormula));
+                } else {
+                    cell = row.createCell(i + 1);
+                    cell.setCellStyle(bodyStyle);
+                    cell.setCellValue(alarmHost[i]);
+                    if(i==1){
+//                        firstCellFormula = cell.getCellFormula();
+                    } else if(i==lastCell-2){
+//                        lastCellFormula = cell.getCellFormula();
+                    }
+                }
             }
         }
 
-        row = sheet.createRow(++rowNumber);
-        cell = row.createCell(1);
-        cell.setCellStyle(bodyStyle);
-        cell.setCellValue("host1");
+//        row = sheet.createRow(++rowNumber);
+//        cell = row.createCell(1);
+//        cell.setCellStyle(bodyStyle);
+//        cell.setCellValue("host1");
+//
+//        cell = row.createCell(2);
+//        cell.setCellStyle(bodyStyle);
+//        cell.setCellValue(2);
+//
+//        cell = row.createCell(3);
+//        cell.setCellStyle(bodyStyle);
+//        cell.setCellValue(0);
 
-        cell = row.createCell(2);
-        cell.setCellStyle(bodyStyle);
-        cell.setCellValue(2);
-
-        cell = row.createCell(3);
-        cell.setCellStyle(bodyStyle);
-        cell.setCellValue(0);
-
-        cell = row.createCell(4);
-        cell.setCellStyle(bodyStyle);
-        cell.setCellFormula("SUM(C3:D3)");
+//        cell = row.createCell(4);
+//        cell.setCellStyle(bodyStyle);
+//        cell.setCellFormula("SUM(C3:D3)");
 
 
     }
