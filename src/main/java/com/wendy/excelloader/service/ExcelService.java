@@ -9,6 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 public interface ExcelService {
 
     void createExcel(Workbook workbook, CellStyle headStyle, CellStyle bodyStyle, HttpServletResponse response);
-    void alarmStatus(Sheet sheet, CellStyle headStyle, CellStyle bodyStyle, HttpServletResponse response);
+    void alarmStatus(Sheet sheet, CellStyle headStyle, CellStyle bodyStyle);
     void faultStatus(Sheet sheet, CellStyle headStyle, CellStyle bodyStyle);
 }

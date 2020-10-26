@@ -24,8 +24,6 @@ public class ExcelController {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
 
-//        workbook.createSheet("엑셀양식 샘플");
-
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-Disposition","attachment; filename= sample.xlsx");
 
