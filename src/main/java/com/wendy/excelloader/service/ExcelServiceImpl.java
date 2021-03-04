@@ -37,7 +37,6 @@ public class ExcelServiceImpl implements ExcelService {
         String[] alarmHost = {"host1","2","0"};
 //        List<Alarm> alarmList = new ArrayList<>();
         Alarm alarm = new Alarm();
-
 //        alarmList.add(new Alarm("ITEM", alarmMessage, alarm.getAlarmCount()));
         Map<String, String[]> map = new HashMap<>();
 
